@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="~{fragments :: page_head('Your Address Book', 'none')}" />
+<body>
+<div class="container-fluid">
+	<div th:replace="~{navigation :: header-menu}"></div>
+	<div th:replace="~{navigation :: search_nav}"></div>
+	
+	<div class="text-center">
+		<div><h2>Your Address Book</h2></div>
+		<div>
+			<a th:href="@{/address_book/new}" class="h4">Add New Address</a>
+		</div>
+	</div>
+	
+	<div th:if="${message != null}" class="alert alert-success text-center m-1">
+		[[${message}]]
+	</div>
+	
+	<div class="row m-1">
+	    <div class="col-sm-6 mt-2">
+	        <div class="card" th:classappend="${usePrimaryAddressAsDefault ? 'bg-warning' : ''}">
+	            <div class="card-header">
+	                <div class="row">
+	                    <div class="col">
+	                        <b>Your Primary Address</b>
+	                        <th:block th:if="${usePrimaryAddressAsDefault}">
+								<span class="text-danger">[Default]</span>
+							</th:block>
+							
+	                        <th:block th:unless="${usePrimaryAddressAsDefault}">
+					  
+								<a th:with="redirect=${param.redirect}" th:href="@{'/address_book/default/0?redirect=' + ${redirect}}">[Set as default]</a>
+							</th:block>
+	                    </div>
+	                    <div class="col">
+							<div class="float-end">
+								<a class="fas fa-edit icon-dark" title="edit your primary address"
+									th:href="@{/account_details(redirect=address_book)}"></a>
+							</div>
+						</div>
+	                </div>
+	            </div>
+	            <div class="card-body">
+	                [[${customer}]]
+	            </div>
+	        </div>
+	    </div>
+	
+	    <th:block th:each="address, status: ${listAddresses}">
+		    <div class="col-sm-6 mt-2">
+		        <div class="card" th:classappend="${address.defaultForShipping ? 'bg-warning' : ''}">
+		            <div class="card-header">
+		                <div class="row">
+		                    <div class="col">
+		                        <b>Address #[[${status.count + 1}]]</b>
+		                        
+		                        <th:block th:if="${address.defaultForShipping}">
+									<span class="text-danger">[Default]</span>
+								</th:block>
+								
+		                        <th:block th:unless="${address.defaultForShipping}">
+									
+									<a th:with="redirect=${param.redirect}" th:href="@{'/address_book/default/' + ${address.id} + '?redirect=' + ${redirect}}">[Set as default]</a>
+								</th:block>
+		                    </div>
+		                    <div class="col">
+								<div class="float-end">
+									<a class="fa-regular fa-pen-to-square icon-dark" title="edit youyr primary address"
+										th:href="@{'/address_book/edit/' + ${address.id}}"></a>
+			
+									&nbsp;
+									<a class="fa-solid fa-trash icon-dark linkDelete" title="edit youyr primary address"
+										th:entityId="${address.id}"
+										th:href="@{'/address_book/delete/' + ${address.id}}"></a>
+								</div>
+							</div>
+		                </div>
+		            </div>
+		            <div class="card-body">
+		                [[${address}]]
+		            </div>
+		        </div>
+		    </div>
+		  </th:block>
+	</div>
+	<div>&nbsp;</div>
+	<div th:replace="~{fragments :: confirm_modal}"></div>
+	<div th:replace="~{navigation :: footer-menu}"></div>
+</div>
+<script type="text/javascript">
+	
+	$(document).ready(function() { // this mensures the code inside it is executed only after the HTML document has been fully loaded.
+		$(".linkDelete").on("click", function(e){     // This line selects all elements with the class "link-delete" and attaches a click event listener. when the class is clicked, the function inside the on() method will be executed.
+			e.preventDefault(); //This line prevents the default action associated with the click event. in this case deleting the selected user.
+			link = $(this);  
+			entityId = link.attr("entityId");
+			
+			$("#yesButton").attr("href", link.attr("href"));   //pressing the yes button on model it will assign the hyperlink to the delete user ie th:href="@{'/users/delete/' + ${user.id}}" 
+			$("#confirmText").text("Are you sure you want to Delete this  ID " + entityId + "?");
+			
+			$("#confirmModal").modal("show");
+		});
+	});
+	
+		
+</script>
+</body>
+</html>

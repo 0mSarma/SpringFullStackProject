@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="~{fragments :: page_head(${pageTitle}, 'none')}" />
+<body>
+<div class="container-fluid">
+	<div th:replace="~{navigation :: header-menu}"></div>
+	
+	<div>&nbsp;</div>
+	<div class="text-center">
+		<h2>Order Received</h2>
+		<h4>A confirmation email has been Sent to you </h4>
+		<p>KINDLY CHECK YOUR EMAIL FOR DETAILS </p>
+		
+	</div>
+	
+	
+	<div>&nbsp;</div>
+	<div th:replace="~{navigation :: footer-menu}"></div>
+</div>
+</body>
+</html>

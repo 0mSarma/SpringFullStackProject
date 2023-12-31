@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: page_head('Home', 'none')}"></head>
+<body>
+<div class="container-fluid">
+	<div th:replace="~{navigation :: nav-menu}"></div>
+	<div>
+		<h2>Shopom control Panel</h2>
+		Welcome  
+		<a th:href="@{/account}" 
+			sec:authentication="principal.fullname"></a>   <!--here we use thymeleaf spring security to display the authenticated logged in user details-->
+		 &nbsp;
+		<span sec:authentication="principal.authorities"></span>
+	</div>
+	
+	<div th:replace="~{fragments :: footer}"></div>
+		
+</div>
+
+</body>
+</html>

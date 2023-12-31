@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: page_head(${pageTitle}, 'none')}" />
+    <title>Customer Registration</title>
+    <!-- Include additional CSS files or scripts as needed -->
+</head>
+<body>
+    <div class="container-fluid">
+        <div th:replace="~{navigation :: header-menu}"></div>
+
+        <div class="text-center">
+            <h2>Customer Registration</h2>
+        </div>
+
+        <form th:action="@{/create_customer}" method="post" th:object="${customer}" style="max-width: 600px; margin: 0 auto;" 
+        	onsubmit="return checkEmailUnique(this);">
+        <div class="border border-secondary rounded p-3">
+            <div class="mb-3 row">
+                <label for="firstName" class="col-sm-4 col-form-label">First Name:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{firstName}" class="form-control" required="required" maxlength="45" minlength="2" id="firstName" />
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="lastName" class="col-sm-4 col-form-label">Last Name:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{lastName}" class="form-control" required="required" maxlength="45" minlength="2" id="lastName" />
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="email" class="col-sm-4 col-form-label">E-Mail:</label>
+                <div class="col-sm-8">
+                    <input type="email" th:field="*{email}" class="form-control" required="required" maxlength="45" minlength="2" id="email" />
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="password" class="col-sm-4 col-form-label">Password:</label>
+                <div class="col-sm-8">
+                    <input type="password" th:field="*{password}" class="form-control" required="required" maxlength="15" minlength="6"
+                    	oninput="checkPasswordMatch(document.getElementById('confirmPassword'))" />
+                
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="password" class="col-sm-4 col-form-label">Re-Type Password:</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control" required="required" maxlength="15" minlength="6" id="confirmPassword" 
+                    	oninput="checkPasswordMatch(this)" />
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="phoneNumber" class="col-sm-4 col-form-label">Phone Number:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{phoneNumber}" class="form-control" required="required" maxlength="15" minlength="6" id="confirmPassword" />
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="addressLine1" class="col-sm-4 col-form-label">Address Line 1:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{addressLine1}" class="form-control" required="required" maxlength="64" minlength="6" id="addressLine1" />
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="addressLine2" class="col-sm-4 col-form-label">Address Line 2:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{addressLine2}" class="form-control" maxlength="64" id="addressLine2" />
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="city" class="col-sm-4 col-form-label">City:</label>
+                <div class="col-sm-8">
+					<input type="text" th:field="*{city}" class="form-control" maxlength="45" minlength="3" id="city" />
+              
+                </div>
+            </div>
+            
+             <div class="mb-3 row">
+                <label for="country" class="col-sm-4 col-form-label">Country:</label>
+                <div class="col-sm-8">
+					<select class="form-control" th:field="*{country}">
+						<th:block th:each="country : ${listCountries}">
+							<option th:value="${country.id}">[[${country.name}]]</option>
+						</th:block>
+					</select>
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="state" class="col-sm-4 col-form-label">State/Province:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{state}" class="form-control" maxlength="45" minlength="3" 
+                    	list="listStates" />
+                    <datalist id="listStates"></datalist>
+                </div>
+            </div>
+            
+            <div class="mb-3 row">
+                <label for="postalCode" class="col-sm-4 col-form-label">Postal code:</label>
+                <div class="col-sm-8">
+                    <input type="text" th:field="*{postalCode}" class="form-control" maxlength="10" minlength="2" id="postalCode" />
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </div>
+         </div>
+        </form>
+
+        <div>&nbsp;</div>
+        <div th:replace="~{fragments :: modal_dialog}"></div>
+        <div th:replace="~{navigation :: footer-menu}"></div>
+    </div>
+<script type="text/javascript">
+	contextPath = "[[@{/}]]";
+	
+	
+	
+	function checkEmailUnique(form) {  //this java script function is invoked when form is subbmitted
+		url = contextPath + "customers/check_unique_email";  // as soon as the user is subbmited it goes to the  
+		userEmail = $("#email").val();
+		csrfValue = $("input[name='_csrf']").val();
+		params = {email: userEmail, _csrf: csrfValue};
+		
+		
+		$.post(url, params, function(response) {      // here the list of params(which include email,id and csrfValue)  are passed to the url with the  
+			if (response == "OK") {					 //   help of POST method which is caught by {  @PostMapping("/users/check_email")    }  then we await for the response									//                                           {	 public String checkDuplicateEmail()  }				which is either OK or Duplicated.	
+				form.submit();
+			} else if (response == "Duplicated") {
+				showWarningModal("There is another customer having the email " + userEmail);
+			} else {
+				showErrorModal("No response from server")
+			}		
+		}).fail(function() {
+			showErrorModal("Could not connect to the server")
+		})
+		 
+		return false;
+	}	
+</script> 
+<script type="text/javascript" th:src="@{/js/common_modal.js}"></script>
+<script type="text/javascript" th:src="@{/js/common_customer_form.js}"></script>
+
+</body>
+</html>

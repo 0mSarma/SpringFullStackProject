@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	
+<div th:fragment="content(statusVar, label, iconName)" class="col">
+	<th:block th:with="iconColor = ${statusVar ? 'icon-green' : 'icon-dark'}">
+		<i th:class="'fa-solid ' + ${iconName} + ' fa-2xl ' + ${iconColor}"></i>
+	</th:block>
+	<div><small>[[${label}]]</small></div>
+	
+</div>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+  <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<div class="container-fluid">
+<div th:fragment ="header-menu">
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+		<a class="navbar-brand" th:href="@{/}">
+			&nbsp;
+			<img th:src="@{${SITE_LOGO}}" />
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar, #searchNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id ="topNavbar">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+		          <a class="nav-link" href="">Careers</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+		   		</li>
+		   		<li class="nav-item">
+		          <a class="nav-link" href="">Payments</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+		   		</li>
+		   		<li class="nav-item">
+		          <a class="nav-link" href="">Shipping &amp; Delivery</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+		   		</li>
+		   		
+		   		<th:block sec:authorize="!isAuthenticated()">
+		   		<li class="nav-item">
+		          <a class="nav-link" th:href="@{/login}">Login</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+		   		</li>
+		   		<th:block sec:authorize="isAuthenticated()">
+		   		
+		   		<li class="nav-item">
+		          <a class="nav-link" th:href="@{/register}">Register</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+		   		</li>
+		   		<li class="nav-item">
+		          <a class="nav-link" href="">Contact</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+		   		</li>
+		   		
+			</ul>
+		</div>
+		
+	</nav>
+</div>
+
+<div th:fragment ="search_nav" class="row">
+	<div class="col-md">
+		<th:block sec:authorize="isAuthenticated()">
+		<form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+			<input type="submit" value="Logout" />
+		</form>
+		</th:block>
+		
+		<nav class="navbar navbar-expand-sm bg-light">
+			<div class="collapse navbar-collapse" id="searchNavbar">
+				<form class="form" th:action="@{/search}" method="get">
+					<div class="input-group">
+						<input type="search" name="keyword" class="form-control mr-sm-2" 
+							placeholder="keyword" th:value="${keyword}" required />
+							&nbsp;&nbsp;
+						<button type="submit" class="btn btn-outline-success">Submit</button>
+					</div>
+				</form>
+				<th:block sec:authorize="isAuthenticated()">
+					<ul class="navbar-nav">
+					    <li class="nav-item" sec:authorize="isAuthenticated()">
+					        <b><a class="nav-link" th:href="@{/account_details}" th:text="${#authentication.principal.fullName}"></a></b>
+					    </li>
+					
+					    <li class="nav-item">
+					        <a class="nav-link" th:href="@{/address_book}">Address Book</a>
+					    </li>
+					
+					    <li class="nav-item">
+					        <a class="nav-link" href="#">Questions</a>
+					    </li>
+					
+					    <li class="nav-item">
+					        <a class="nav-link" href="#">Reviews</a>
+					    </li>
+					
+					    <li class="nav-item">
+					        <a class="nav-link" th:href="@{/orders}">Orders</a>
+					    </li>
+					
+					    <li class="nav-item">
+					        <a class="nav-link" th:href="@{/cart}">Cart</a>
+					    </li>
+					
+					    <li class="nav-item">
+					        <a class="nav-link" href="javascript: document.logoutForm.submit()">Logout</a>
+					    </li>
+					</ul>
+				<th:block sec:authorize="!isAuthenticated()">
+			</div>
+		</nav>
+	</div>
+</div>
+
+<div th:fragment ="footer-menu">
+	<div>
+		<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#bottomNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id ="bottomNavbar">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+			          <a class="nav-link" href="">About us</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+			   		</li>
+			   		<li class="nav-item">
+			          <a class="nav-link" href="">Privacy policy</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+			   		</li>
+			   		<li class="nav-item">
+			          <a class="nav-link" href="">Returns &amp; Refund</a>                 <!-- It displays the full name of the currently authenticated user (the user principal) in the link. -->
+			   		</li>
+				</ul>
+			</div>	
+		</nav>
+	</div>
+	<div th:fragment="footer" class="text-center m-3">
+		<p>[[${COPYRIGHT}]]</p>
+	</div>
+</div>
+	
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#logoutLink").on("click", function(e){
+			e.preventDefault();
+			document.logoutForm.submit();
+		});
+	});	
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head th:replace="~{fragments :: page_head('Error', 'none')}">
+</head>
+<body>
+<div class="container-fluid">
+	<div th:replace="~{navigation :: header-menu}" />
+	<div class="m-3">
+		<h2>Sorry, you dont have permission to access this page</h2>
+		
+	</div>
+	
+	<div th:replace="~{navigation :: footer-menu}" />
+		
+</div>	
+</body>
+</html>

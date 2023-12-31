@@ -1,0 +1,44 @@
+server:
+  port: 80
+  servlet:
+    context-path: '/Shopom '
+spring:
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 0066774qwe
+    url: jdbc:mysql://localhost:3306/shopomdb
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    show-sql: true
+    
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 881593352710-qjaakpv6fn6e9dnhv9j32q135tvjj2vi.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+            redirect-uri: "http://localhost/Shopom/login/oauth2/code/google"
+            client-name: Google    
+          facebook:
+            client-id: 356611863616739
+            client-secret: 7f0971f6ffe3bbbcd9b2688f519a0a23
+            scope:
+              - email
+              - public_profile
+            client-name: Facebook
+
+   
+          

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: page_head('shopme', 'none')}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.2.0/css/bootstrap.min.css">
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .login-container {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-container h2 {
+        text-align: center;
+        color: #007bff;
+    }
+
+    .login-container p {
+        margin-bottom: 10px;
+    }
+
+    .login-container input[type="email"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .login-container input[type="checkbox"] {
+        margin-top: 5px;
+    }
+
+    .login-container input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .login-container input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .error-message {
+        color: #dc3545;
+    }
+
+    .warning-message {
+        color: #ffc107;
+    }
+</style>
+
+<body>
+    <header th:replace="~{navigation :: header-menu}" />
+
+    <div class="container d-flex justify-content-center">
+	    <div class="text-center">
+	        <h2>Customer Login</h2>
+	        <div class="mt-3">
+	            <a class="btn btn-lg btn-secondary" th:href="@{/oauth2/authorization/google}">
+	                <i class="fab fa-google"></i>&nbsp;&nbsp;Continue With Google
+	            </a>
+	        </div>
+	      
+	        <div class="mt-3">
+	            <a class="btn btn-lg btn-secondary" th:href="@{/oauth2/authorization/facebook}">
+	                <i class="fab fa-facebook"></i>&nbsp;&nbsp;Continue With Facebook
+	            </a>
+	        </div>
+	        <div class="login-container border mt-3">
+	            <div>&nbsp;</div>
+	            <form th:action="@{/login}" method="post">
+	                <div th:if="${param.error}" class="error-message">
+	                    <p>[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+	                </div>
+	                <div th:if="${param.logout}" class="warning-message">
+	                    <p>You have been logged out!</p>
+	                </div>
+	
+	                <p>Access to the Control Panel</p>
+	
+	                <p>
+	                    <input type="email" name="email" class="form-control" placeholder="E-mail" required />
+	                </p>
+	                <p>
+	                    <input type="password" name="password" class="form-control" placeholder="Password" required />
+	                </p>
+	                <p>
+	                    <input type="checkbox" name="remember-me" />&nbsp;Remember Me
+	                </p>
+	                <p>
+	                    <input type="submit" value="Login" class="btn btn-primary" />
+	                </p>
+	            </form>
+	        </div>
+	        <div>&nbsp;</div>
+	        <div>
+				or <a th:href="@{/forgot_password}">Forgot Password</a>
+			</div>  
+	        <div>
+		    	Don't have an account? <a th:href="@{/register}">Sign up</a>
+	        </div>
+		    <div>&nbsp;</div>
+	    </div>
+	   
+    </div>
+    
+
+    <div class="footer" th:replace="~{navigation :: footer-menu}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
